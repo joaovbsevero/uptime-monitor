@@ -21,6 +21,7 @@ impl MonitorAPI {
     /// Create new check
     #[oai(method = "post", path = "/", tag = APITags::Check)]
     async fn create_check(&self, Data(database): Data<&Database>) {
+        let collection = database.collection("checks");
         todo!()
     }
 
@@ -33,12 +34,6 @@ impl MonitorAPI {
     /// Read check history
     #[oai(method = "get", path = "/:check_id", tag = APITags::History)]
     async fn read_history(&self, Data(database): Data<&Database>) {
-        todo!()
-    }
-
-    /// Delete check history
-    #[oai(method = "delete", path = "/", tag = APITags::History)]
-    async fn delete_history(&self, Data(database): Data<&Database>) {
         todo!()
     }
 }

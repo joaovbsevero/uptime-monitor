@@ -26,5 +26,8 @@ pub(crate) async fn db(config: &Config) -> Database {
     let client = Client::with_uri_str(&config.db_uri)
         .await
         .expect(&format!("Invalid connection URI: {}", config.db_uri));
-    client.database(&config.db_name)
+    let db = client.database(&config.db_name);
+
+
+    db
 }

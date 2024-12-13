@@ -5,7 +5,6 @@ This is part of a programming challenge to develop an uptime monitor that enable
 ## Features
 
 - Timed requests: Set a schedule for every check
-- Custom validation: Expect the response to contain a specified response
 - Webhook: Trigger an action when a check goes down or comes back up
 - History: Store history of checks for later retrieval and analysis
 
