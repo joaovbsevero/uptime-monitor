@@ -3,8 +3,11 @@ use envconfig::Envconfig;
 
 const VERSION: &str = env!("CARGO_PKG_VERSION");
 
-#[derive(Envconfig)]
+#[derive(Envconfig, Clone)]
 pub(crate) struct Config {
+    #[envconfig(from = "ADDRESS", default = "0.0.0.0")]
+    pub(crate) addr: String,
+
     #[envconfig(from = "PORT", default = "8080")]
     pub(crate) port: u16,
 

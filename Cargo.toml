@@ -4,11 +4,27 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+bson = { version = "2.13.0", features = ["chrono"] }
+chrono = { version = "0.4.39", features = ["serde"] }
 dotenv = "0.15.0"
 envconfig = "0.11.0"
-mongodb = "3.1.0"
+futures = "0.3.31"
+mongodb = { version = "3.1.0", features = ["sync"] }
 poem = "3.1.5"
-poem-openapi = { version = "5.1.4", features = ["swagger-ui"] }
+poem-openapi = { version = "5.1.4", features = [
+    "bson",
+    "chrono",
+    "redoc",
+    "swagger-ui",
+] }
+reqwest = { version = "0.12.12", features = ["blocking", "json"] }
+serde = { version = "1.0.217", features = ["derive"] }
+serde_json = "1.0.134"
 tokio = { version = "1.41.1", features = ["full"] }
 tracing = "0.1.41"
-tracing-subscriber = { version = "0.3.19", features = ["fmt", "registry", "env-filter", "local-time"] }
+tracing-subscriber = { version = "0.3.19", features = [
+    "fmt",
+    "registry",
+    "env-filter",
+    "local-time",
+] }

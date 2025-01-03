@@ -1,12 +1,14 @@
 mod api;
 mod config;
 mod dependencies;
+mod middlewares;
+mod models;
 mod monitor;
 
 use poem::{handler, listener::TcpListener, middleware::AddData, EndpointExt, Route};
 use poem_openapi::OpenApiService;
 
-use api::{middlewares, MonitorAPI};
+use api::MonitorAPI;
 use config::Config;
 use tokio::{fs::File, io::AsyncReadExt};
 
@@ -34,17 +36,22 @@ async fn main() -> Result<(), std::io::Error> {
     dependencies::log(&config);
     let db = dependencies::db(&config).await;
 
+    // Spawn monitor process
+    tokio::spawn(monitor::start(db.clone()));
+
     // Setup service
     let api_service = OpenApiService::new(MonitorAPI, "Uptime Monitor 📢 ", config.version);
-    let ui = api_service.swagger_ui();
+    let swagger = api_service.swagger_ui();
+    let redoc = api_service.redoc();
     let app = Route::new()
         .nest("/favicon.ico", favicon_handler)
         .nest("/", api_service)
-        .nest("/docs", ui)
+        .nest("/docs", swagger)
+        .nest("/redoc", redoc)
         .around(middlewares::log)
         .with(AddData::new(db));
 
     // Start server
-    let address = format!("0.0.0.0:{}", config.port);
+    let address = format!("{}:{}", config.addr, config.port);
     poem::Server::new(TcpListener::bind(address)).run(app).await
 }
